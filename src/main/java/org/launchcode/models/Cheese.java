@@ -1,16 +1,23 @@
 package org.launchcode.models;
 
-import org.springframework.beans.factory.annotation.Value;
-
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.persistence.Entity;
 
 /**
  * Created by LaunchCode
  */
+@Entity
 public class Cheese {
+
+    @Id
+    @GeneratedValue
+    private int id;
 
     @NotNull
     @Size(min=3, max=15, message = "Name must be between 3 and 15 characters")
@@ -20,37 +27,24 @@ public class Cheese {
     @Size(min=1, message = "Description must not be empty")
     private String description;
 
-    @NotNull
-    private CheeseType type;
+    @ManyToOne
+    private Category category;
 
     @NotNull
     @Max(5)
     @Min(1)
     private Integer rating;
 
-    private int cheeseId;
-    private static int nextId = 1;
+    public Cheese() {
+
+    }
 
     public Cheese(String name, String description,
-                  CheeseType type, Integer rating) {
-        this();
+                  Category category, Integer rating) {
         this.name = name;
         this.description = description;
-        this.type = type;
+        this.category = category;
         this.rating = rating;
-    }
-
-    public Cheese() {
-        cheeseId = nextId;
-        nextId++;
-    }
-
-    public int getCheeseId() {
-        return cheeseId;
-    }
-
-    public void setCheeseId(int cheeseId) {
-        this.cheeseId = cheeseId;
     }
 
     public String getName() {
@@ -76,10 +70,14 @@ public class Cheese {
         this.rating = rating;
     }
 
-    public CheeseType getType() {
-        return type;
+    public Category getCategory() {
+        return category;
     }
-    public void setType(CheeseType type) {
-        this.type = type;
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public int getId() {
+        return id;
     }
 }
